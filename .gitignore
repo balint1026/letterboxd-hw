@@ -111,6 +111,8 @@ proguard/
 *~
 *.swp
 
+/app/src/main/assets/env
+
 # Keystore files
 
 # Google Services (e.g. APIs or Firebase)
@@ -184,7 +186,6 @@ crashlytics-build.properties
 fabric.properties
 
 ### AndroidStudio Patch ###
-
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/kotlin,dotenv,android,androidstudio

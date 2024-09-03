@@ -1,7 +1,5 @@
 package com.balint1026.tellhw.repositories
 
-
-
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.balint1026.tellhw.models.User

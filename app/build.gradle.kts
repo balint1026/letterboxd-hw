@@ -39,6 +39,8 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
+        dataBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -52,15 +54,27 @@ android {
 
 dependencies {
 
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
+    annotationProcessor(libs.compiler)
     implementation(libs.androidx.recyclerview)
-
-
+    implementation(libs.glide)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.firestore)
+    implementation(libs.dotenv.kotlin)
 
+
+
+    implementation(libs.glide.compose)
+
+
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
