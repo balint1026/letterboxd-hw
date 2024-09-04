@@ -4,23 +4,34 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
+
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.balint1026.tellhw.R
 import com.balint1026.tellhw.adapters.MovieAdapter
 import com.balint1026.tellhw.models.Movie
-import com.balint1026.tellhw.repositories.MovieRepository
-import com.google.firebase.auth.FirebaseAuth
 
+import com.balint1026.tellhw.viewmodels.MainViewModel
+import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+
+    private val mainViewModel: MainViewModel by viewModels()
 
     private lateinit var auth: FirebaseAuth
     private lateinit var recyclerView: RecyclerView
     private lateinit var movieAdapter: MovieAdapter
-    private val movies: MutableList<Movie> = mutableListOf()
-    private val movieRepository = MovieRepository()
+
     var currentPage = 1
     var isLoading = false
 
@@ -31,13 +42,28 @@ class MainActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerView)
         auth = FirebaseAuth.getInstance()
+        val moviesList = mutableListOf<Movie>()
 
-        movieAdapter = MovieAdapter(movies) { movie ->
-            val intent = Intent(this, MovieActivity::class.java).apply {
-                putExtra("MOVIE_ID", movie.id)
+        movieAdapter =
+
+            MovieAdapter(moviesList) { movie ->
+                val intent = Intent(this, MovieActivity::class.java).apply {
+                    putExtra("MOVIE_ID", movie.id)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
+
+
+        lifecycleScope.launch {
+            mainViewModel.uiState.flowWithLifecycle(lifecycle)
+                .collectLatest { state ->
+                    moviesList.addAll(state)
+                    movieAdapter.notifyDataSetChanged()
+                    isLoading = false
+                }
         }
+
+
         recyclerView.adapter = movieAdapter
 
         recyclerView.layoutManager = GridLayoutManager(this, 3)
@@ -55,12 +81,11 @@ class MainActivity : AppCompatActivity() {
                 if (!isLoading && (visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0)) {
                     isLoading = true
                     currentPage++
-                    fetchMovies(currentPage)
+                    mainViewModel.fetchMovies(currentPage)
                 }
             }
         })
 
-        fetchMovies(currentPage)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -82,24 +107,15 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
                 true
             }
+
             R.id.action_profile -> {
                 val intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun fetchMovies(page: Int) {
-        movieRepository.getMovies(page) { movieList ->
-            runOnUiThread {
-                if (movieList != null) {
-                    movies.addAll(movieList)
-                    movieAdapter.notifyDataSetChanged()
-                }
-                isLoading = false
-            }
-        }
-    }
 }

@@ -1,7 +1,11 @@
+import com.android.build.api.variant.AnnotationProcessor
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.gms.google-services")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -68,7 +72,8 @@ dependencies {
 
     implementation(libs.glide.compose)
 
-
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
 
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
