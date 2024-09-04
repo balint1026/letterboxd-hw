@@ -13,7 +13,7 @@ This app is a simplified version of the movie-tracking platform Letterboxd, buil
 - **Infinite Scrolling**: As users scroll, more movies are loaded dynamically.
 - **Movie Details**: Tap on any movie to view detailed information, including title, release date, overview, and poster.
 
-### ⭐ Reviews
+### ⭐ Reviews *IN PROGRESS*
 - **Read Reviews**: View reviews left by other users for each movie.
 - **Leave a Review**: Authenticated users can submit their own review and rate the movie.
 
@@ -26,6 +26,15 @@ This app is a simplified version of the movie-tracking platform Letterboxd, buil
 - **Firebase Authentication**: Handles user sign-up, login, and authentication.
 - **Glide**: Image loading library used for fetching and displaying movie posters.
 - **Firestore**: A NoSQL cloud database to store user reviews ` *IN PROGRESS*
+
+## Screenshots
+<p align="center">
+    
+<img src="https://github.com/user-attachments/assets/a26bb693-3957-4e99-8222-ddf0f1b990cc" alt="main-page" width="40%" />
+
+<img src="https://github.com/user-attachments/assets/4e3aa2fe-9106-4da0-8289-56418ef3a3a1" alt="movie-page" width="40%" />
+</p>
+
 
 ## 🎯 Getting Started
 
